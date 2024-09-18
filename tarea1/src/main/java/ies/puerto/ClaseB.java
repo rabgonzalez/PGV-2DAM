@@ -1,4 +1,4 @@
-package ies.puerto.tarea1;
+package ies.puerto;
 
 import java.io.File;
 import java.io.FileWriter;
