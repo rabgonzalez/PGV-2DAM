@@ -1,4 +1,5 @@
 package ies.puerto;
+import java.io.File;
 import java.io.IOException;
 
 public class ClaseA {
@@ -7,7 +8,9 @@ public class ClaseA {
     }
 
     public static void main(String[] args) {
-        ProcessBuilder pb = new ProcessBuilder("java", "-cp", ".", "ies.puerto.claseB.java");
+        ProcessBuilder pb = new ProcessBuilder("java", "-cp", "./tarea1/target/classes", "ies.puerto.ClaseB", "hola mundo!");
+        pb.redirectErrorStream(true);
+        pb.redirectOutput(new File("output.txt"));
 
         try{
             for(int i = 0; i < 10; i++){
