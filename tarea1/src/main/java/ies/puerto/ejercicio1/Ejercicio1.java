@@ -8,7 +8,7 @@ public class Ejercicio1 {
     public static void main(String[] args) {
         ProcessBuilder pb = new ProcessBuilder("ping", "google.com");
         pb.redirectErrorStream(true);
-        pb.redirectOutput(new File("output.txt"));
+        pb.redirectOutput(new File("tarea1/src/main/resources/ejercicio1.txt"));
 
         try{
             Process p = pb.start();

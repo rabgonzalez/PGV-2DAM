@@ -11,8 +11,8 @@ public class Ejercicio2 {
         pb.redirectErrorStream(true);
         pb2.redirectErrorStream(true);
 
-        pb.redirectOutput(new File("output.txt"));
-        pb2.redirectOutput(new File("output2.txt"));
+        pb.redirectOutput(new File("tarea1/src/main/resources/ejercicio2.xt"));
+        pb2.redirectOutput(new File("tarea1/src/main/resources/ejercicio2_2.txt"));
 
         try {
             Process p = pb.start();
