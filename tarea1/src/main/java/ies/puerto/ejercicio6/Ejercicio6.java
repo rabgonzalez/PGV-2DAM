@@ -6,7 +6,7 @@ public class Ejercicio6 {
     public Ejercicio6(){}
 
     public static void main(String[] args) {
-        ProcessBuilder pb = new ProcessBuilder("java", "-cp", "./tarea1/target/classes", "ies.puerto.ejercicio6.Ejercicio6", "Adios mundo!");
+        ProcessBuilder pb = new ProcessBuilder("java", "-cp", "./tarea1/target/classes", "ies.puerto.ejercicio6.WorkerClass", "Adios mundo!");
 
         try {
             for(int i = 0; i < 5; i++){
