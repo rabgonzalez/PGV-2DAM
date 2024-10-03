@@ -23,12 +23,12 @@ public class Ejercicio1 implements Runnable{
                 ganador = true;
                 System.out.println(nombre + " ha ganado!");
             }
-        }
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
