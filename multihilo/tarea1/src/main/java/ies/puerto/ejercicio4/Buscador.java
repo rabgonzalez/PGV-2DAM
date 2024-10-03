@@ -23,7 +23,6 @@ public class Buscador implements Runnable {
                 System.out.println("Quidditch encontrada por el "+equipo+"!");
                 break;
             }
-            System.out.println(equipo+" no lo consigue... "+intento);
 
             try {
                 Thread.sleep(1000);
