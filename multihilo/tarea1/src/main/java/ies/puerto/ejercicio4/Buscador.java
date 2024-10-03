@@ -20,7 +20,7 @@ public class Buscador implements Runnable {
 
             if(intento == SUERTE && !encontrado){
                 encontrado = true;
-                System.out.println("Quidditch encontrada por el equipo "+equipo+"!");
+                System.out.println("Quidditch encontrada por el "+equipo+"!");
                 break;
             }
             System.out.println(equipo+" no lo consigue... "+intento);

@@ -21,7 +21,7 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(cazador1.getNombre()+": "+cazador1.getMarcador()+" puntos");
-        System.out.println(cazador2.getNombre()+": "+cazador2.getMarcador()+" puntos");
+        System.out.println(cazador1.getEquipo()+": "+cazador1.getMarcador()+" puntos");
+        System.out.println(cazador2.getEquipo()+": "+cazador2.getMarcador()+" puntos");
     }
 }

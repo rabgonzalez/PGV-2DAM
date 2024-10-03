@@ -5,6 +5,15 @@ public class Cazador implements Runnable{
     private String nombre;
     private int marcador;
     private Thread buscador;
+    private String equipo;
+
+    public String getEquipo() {
+        return this.equipo;
+    }
+
+    public void setEquipo(String equipo) {
+        this.equipo = equipo;
+    }
 
     public String getNombre() {
         return this.nombre;
@@ -32,15 +41,6 @@ public class Cazador implements Runnable{
 
     public Cazador(String nombre, Thread buscador) {
         this.nombre = nombre;
-        this.buscador = buscador;
-    }
-
-    public Cazador() {
-    }
-
-    public Cazador(String nombre, int marcador, Thread buscador) {
-        this.nombre = nombre;
-        this.marcador = marcador;
         this.buscador = buscador;
     }
 
@@ -73,7 +73,8 @@ public class Cazador implements Runnable{
     public void run() {
         while(buscador.isAlive()){
             marcador++;
-            System.out.println(nombre+" ha recogido 1 punto para el "+buscador.toString());
+            equipo = nombre.contains("A") ? "Equipo A" : "Equipo B";
+            System.out.println("+1 punto para el "+equipo);
 
             if(buscador.isInterrupted()){
                 break;
