@@ -71,20 +71,16 @@ public class Cazador implements Runnable{
 
     @Override
     public void run() {
-        while(buscador.isAlive()){
-            if(buscador.isInterrupted()){
-                break;
-            }
-
-            marcador++;
-            equipo = nombre.contains("A") ? "Equipo A" : "Equipo B";
-            System.out.println("+1 punto para el "+equipo);
-
+        while(buscador.isAlive() || !buscador.isInterrupted()){
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            marcador++;
+            equipo = nombre.contains("A") ? "Equipo A" : "Equipo B";
+            System.out.println("+1 punto para el "+equipo);
         }
     }
 }
