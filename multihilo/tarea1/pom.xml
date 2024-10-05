@@ -13,4 +13,9 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>5.11.2</version>
+    </dependency>
 </project>
