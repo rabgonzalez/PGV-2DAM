@@ -8,6 +8,9 @@ public class Main {
         Thread hiloSuperman = new Thread(superman);
         Thread hiloBatman = new Thread(batman);
 
+        System.out.println("SUPERMAN VS BATMAN");
+        System.out.println("EL PRIMERO QUE SALVE 10 AREAS, GANA");
+        System.out.println("-------------------------------");
         hiloSuperman.start();
         hiloBatman.start();
 
