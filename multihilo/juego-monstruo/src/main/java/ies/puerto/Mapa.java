@@ -67,12 +67,13 @@ public class Mapa {
         return x+","+y;
     }
 
-    public synchronized int[][] moverCazador(Cazador cazador, String nuevaPosicion){
+    public synchronized void moverCazador(Cazador cazador, String nuevaPosicion){
         String[] posicion = nuevaPosicion.split(",");
-        int[][] ubicacion = new int[Integer.parseInt(posicion[0])][Integer.parseInt(posicion[1])];
+        int x = Integer.parseInt(posicion[0]);
+        int y = Integer.parseInt(posicion[1]);
+        int[][] ubicacion = new int[x][y];
 
         ubicaciones.put(cazador.getName(), ubicacion);
-        return ubicacion;
     }
 
     public synchronized void generarMonstruo(Monstruo monstruo, String nuevaPosicion){
