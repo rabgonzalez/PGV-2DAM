@@ -1,22 +1,18 @@
 package ies.puerto;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
 public class Mapa {
     private int size;
-    private Map<String, int[][]> ubicaciones;
+    private Personaje[][] ubicaciones;
+    private final int PROBABILIDAD = 7;
 
     public Mapa() {
     }
 
     public Mapa(int size) {
         this.size = size;
-    }
-
-    public Mapa(int size, Map<String,int[][]> ubicaciones) {
-        this.size = size;
-        this.ubicaciones = ubicaciones;
+        this.ubicaciones = new Personaje[size][size];
     }
 
     public int getSize() {
@@ -27,12 +23,16 @@ public class Mapa {
         this.size = size;
     }
 
-    public Map<String,int[][]> getUbicaciones() {
+    public Personaje[][] getUbicaciones() {
         return this.ubicaciones;
     }
 
-    public void setUbicaciones(Map<String,int[][]> ubicaciones) {
+    public void setUbicaciones(Personaje[][] ubicaciones) {
         this.ubicaciones = ubicaciones;
+    }
+
+    public int getPROBABILIDAD(){
+        return this.PROBABILIDAD;
     }
 
     @Override
@@ -59,27 +59,29 @@ public class Mapa {
             "}";
     }
 
-    public String generarUbicacionAleatoria() {
+    public int[] generarUbicacionAleatoria() {
         Random random = new Random();
         int x = random.nextInt(this.size-1);
         int y = random.nextInt(this.size-1);
 
-        return x+","+y;
+        return new int[]{x,y};
     }
 
-    public synchronized void moverCazador(Cazador cazador, String nuevaPosicion){
-        String[] posicion = nuevaPosicion.split(",");
-        int x = Integer.parseInt(posicion[0]);
-        int y = Integer.parseInt(posicion[1]);
-        int[][] ubicacion = new int[x][y];
+    public boolean matar(int[] posicion){
+        Random random = new Random();
+        int probabilidad = random.nextInt(10) + 1;
 
-        ubicaciones.put(cazador.getName(), ubicacion);
+        if(probabilidad > getPROBABILIDAD()){
+            return false;
+        }
+        getUbicaciones()[posicion[0]][posicion[1]] = null; 
+        return true;
     }
 
-    public synchronized void generarMonstruo(Monstruo monstruo, String nuevaPosicion){
-        String[] posicion = nuevaPosicion.split(",");
-        int[][] ubicacion = new int[Integer.parseInt(posicion[0])][Integer.parseInt(posicion[1])];
-
-        ubicaciones.put(monstruo.getNombre(), ubicacion);
+    public synchronized void moverPersonaje(Personaje personaje, int[] nuevaPosicion){
+        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Monstruo){
+            matar(nuevaPosicion);
+        }
+        getUbicaciones()[0][1] = personaje;
     }
 }
