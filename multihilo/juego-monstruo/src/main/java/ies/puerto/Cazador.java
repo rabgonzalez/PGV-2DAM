@@ -1,34 +1,9 @@
 package ies.puerto;
 
+import java.util.Objects;
 
 public class Cazador extends Personaje implements Runnable{
-    private int kills;
-
-    public int getKills() {
-        return this.kills;
-    }
-
-    public void setKills(int kills) {
-        this.kills = kills;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Cazador)) {
-            return false;
-        }
-        Cazador cazador = (Cazador) o;
-        return kills == cazador.kills;
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-            " kills='" + getKills() + "'" +
-            "}";
-    }
+    public static int kills = 0;
 
     public Cazador() {
     }
@@ -39,7 +14,6 @@ public class Cazador extends Personaje implements Runnable{
 
     public Cazador(String nombre, Mapa mapa) {
         super(nombre, mapa);
-        this.kills = 0;
     }
 
     public Cazador(String nombre, Mapa mapa, int[] posicion) {
@@ -52,21 +26,38 @@ public class Cazador extends Personaje implements Runnable{
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Cazador)) {
+            return false;
+        }
+        Cazador cazador = (Cazador) o;
+        return Objects.equals(this, cazador);
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+            "}";
+    }
+
+    @Override
     public void run() {
         int[] nuevaPosicion = null;
         int contador = 0;
 
-        while(this.getKills() < 3){
+        while(kills < 2){
             nuevaPosicion = getMapa().generarUbicacionAleatoria();
             getMapa().moverCazador(this, nuevaPosicion);
 
-            if(this.getKills() > contador){
-                System.out.println(this.getNombre()+" ha capturado a "+this.getKills()+" monstruos!\n");
-                contador = this.getKills();
+            if(kills > contador){
+                System.out.println("Los cazadores han capturado "+kills+" monstruos!\n");
+                contador = kills;
             }
 
-            if(getKills() == 3){
-                System.out.println(this.getNombre()+" ha ganado!");
+            if(kills == 2){
+                System.out.println("Todos los monstruos han sido capturados, Fin de la partida.");
                 break;
             }
 

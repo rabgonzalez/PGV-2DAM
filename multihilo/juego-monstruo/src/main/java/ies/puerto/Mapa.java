@@ -91,7 +91,7 @@ public class Mapa {
             
             if(matar(nuevaPosicion)){
                 monstruo.setCazado(true);
-                cazador.setKills(cazador.getKills()+1);
+                Cazador.kills++;
             }
         }
 

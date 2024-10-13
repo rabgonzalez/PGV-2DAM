@@ -4,8 +4,8 @@ public class Main {
     public static void main(String[] args) throws InterruptedException{
         Mapa mapa = new Mapa(4); 
 
-        Cazador cazador1 = new Cazador("1", mapa);
-        Cazador cazador2 = new Cazador("2", mapa);
+        Cazador cazador1 = new Cazador("C", mapa);
+        Cazador cazador2 = new Cazador("C", mapa);
         Monstruo monstruo1 = new Monstruo("M", mapa);
         Monstruo monstruo2 = new Monstruo("M", mapa);
 
