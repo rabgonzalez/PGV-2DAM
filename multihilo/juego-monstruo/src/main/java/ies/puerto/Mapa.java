@@ -61,13 +61,13 @@ public class Mapa {
 
     public int[] generarUbicacionAleatoria() {
         Random random = new Random();
-        int x = random.nextInt(this.size-1);
-        int y = random.nextInt(this.size-1);
+        int x = random.nextInt(this.size);
+        int y = random.nextInt(this.size);
 
         return new int[]{x,y};
     }
 
-    public boolean matar(int[] posicion){
+    public synchronized boolean matar(Cazador cazador, int[] posicion){
         Random random = new Random();
         int probabilidad = random.nextInt(10) + 1;
 
@@ -75,13 +75,31 @@ public class Mapa {
             return false;
         }
         getUbicaciones()[posicion[0]][posicion[1]] = null; 
+        getUbicaciones()[posicion[0]][posicion[1]] = cazador; 
         return true;
     }
 
-    public synchronized void moverPersonaje(Personaje personaje, int[] nuevaPosicion){
-        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Monstruo){
-            matar(nuevaPosicion);
+    public synchronized void moverCazador(Cazador cazador, int[] nuevaPosicion){
+        if(cazador.getPosicion() != null){
+            int[] posicionAnterior = cazador.getPosicion();
+            getUbicaciones()[posicionAnterior[0]][posicionAnterior[1]] = null;
         }
-        getUbicaciones()[0][1] = personaje;
+        
+        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Monstruo && matar(cazador, nuevaPosicion)){
+            cazador.setKills(cazador.getKills()+1);
+        }
+
+        getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] = cazador;
+        cazador.setPosicion(nuevaPosicion);
+    }
+
+    public void generarMonstruo(Monstruo monstruo){
+        int[] spawn = null;
+        do{
+            spawn = generarUbicacionAleatoria();
+        } while(getUbicaciones()[spawn[0]][spawn[1]] instanceof Personaje);
+
+        getUbicaciones()[spawn[0]][spawn[1]] = monstruo;
+        monstruo.setPosicion(spawn);
     }
 }

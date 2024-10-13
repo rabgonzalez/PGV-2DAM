@@ -4,6 +4,7 @@ import java.util.Objects;
 public class Personaje {
     private String nombre;
     private Mapa mapa;
+    private int[] posicion;
 
     public Personaje() {
     }
@@ -15,6 +16,12 @@ public class Personaje {
     public Personaje(String nombre, Mapa mapa) {
         this.nombre = nombre;
         this.mapa = mapa;
+    }
+
+    public Personaje(String nombre, Mapa mapa, int[] posicion) {
+        this.nombre = nombre;
+        this.mapa = mapa;
+        this.posicion = posicion;
     }
 
     public String getNombre() {
@@ -33,14 +40,12 @@ public class Personaje {
         this.mapa = mapa;
     }
 
-    public Personaje nombre(String nombre) {
-        setNombre(nombre);
-        return this;
+    public int[] getPosicion() {
+        return this.posicion;
     }
 
-    public Personaje mapa(Mapa mapa) {
-        setMapa(mapa);
-        return this;
+    public void setPosicion(int[] posicion) {
+        this.posicion = posicion;
     }
 
     @Override

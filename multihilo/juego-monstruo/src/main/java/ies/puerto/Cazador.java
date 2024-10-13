@@ -1,9 +1,35 @@
 package ies.puerto;
 
-import java.util.Random;
-import java.util.Objects;
 
 public class Cazador extends Personaje implements Runnable{
+    private int kills;
+
+    public int getKills() {
+        return this.kills;
+    }
+
+    public void setKills(int kills) {
+        this.kills = kills;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Cazador)) {
+            return false;
+        }
+        Cazador cazador = (Cazador) o;
+        return kills == cazador.kills;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " kills='" + getKills() + "'" +
+            "}";
+    }
+
     public Cazador() {
     }
 
@@ -13,7 +39,13 @@ public class Cazador extends Personaje implements Runnable{
 
     public Cazador(String nombre, Mapa mapa) {
         super(nombre, mapa);
+        this.kills = 0;
     }
+
+    public Cazador(String nombre, Mapa mapa, int[] posicion) {
+        super(nombre, mapa, posicion);
+    }
+
     @Override
     public int hashCode() {
         return super.hashCode();
@@ -21,11 +53,24 @@ public class Cazador extends Personaje implements Runnable{
 
     @Override
     public void run() {
-        Monstruo monstruo = new Monstruo("monstruo", getMapa());
+        int[] nuevaPosicion = null;
+        int contador = 0;
 
-        while(monstruo != null){
-            int[] nuevaPosicion = getMapa().generarUbicacionAleatoria();
-            getMapa().moverPersonaje(this, nuevaPosicion);
+        while(this.getKills() < 3){
+            nuevaPosicion = getMapa().generarUbicacionAleatoria();
+            do{
+                getMapa().moverCazador(this, nuevaPosicion);
+            } while(!(getMapa().getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Cazador));
+
+            if(this.getKills() > contador){
+                System.out.println(this.getNombre()+" ha capturado a "+this.getKills()+" mounstruos!\n");
+                contador = this.getKills();
+            }
+
+            if(getKills() == 3){
+                System.out.println(this.getNombre()+" ha ganado!");
+                break;
+            }
 
             try {
                 Thread.sleep(1000);
