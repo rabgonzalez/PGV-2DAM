@@ -25,6 +25,10 @@ public class Main {
     }
 
     public static void pintarMapa(Mapa mapa) throws InterruptedException{
+        // Limpia la consola usando secuencias de escape ANSI
+        System.out.print("\033[H\033[2J");
+        System.out.flush();  // Asegura que se limpie inmediatamente
+
         Personaje[][] ubicaciones = mapa.getUbicaciones();
         for(int i = 0; i < ubicaciones.length; i++){
             for(int j = 0; j <= ubicaciones.length-1; j++){

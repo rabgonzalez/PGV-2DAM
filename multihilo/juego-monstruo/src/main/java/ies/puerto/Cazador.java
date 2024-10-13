@@ -52,7 +52,6 @@ public class Cazador extends Personaje implements Runnable{
             getMapa().moverCazador(this, nuevaPosicion);
 
             if(kills > contador){
-                System.out.println("Los cazadores han capturado "+kills+" monstruos!\n");
                 contador = kills;
             }
 
