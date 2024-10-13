@@ -57,8 +57,9 @@ public class Cazador extends Personaje implements Runnable{
         int contador = 0;
 
         while(this.getKills() < 3){
-            nuevaPosicion = getMapa().generarUbicacionAleatoria();
+            // Si en esa posición hay un cazador, vuelve a moverse a una posición aleatoria
             do{
+                nuevaPosicion = getMapa().generarUbicacionAleatoria();
                 getMapa().moverCazador(this, nuevaPosicion);
             } while(!(getMapa().getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Cazador));
 
@@ -73,7 +74,7 @@ public class Cazador extends Personaje implements Runnable{
             }
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

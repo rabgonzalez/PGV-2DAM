@@ -14,7 +14,7 @@ public class Main {
         mapa.generarMonstruo(new Monstruo("M"));
         mapa.generarMonstruo(new Monstruo("M"));
         mapa.generarMonstruo(new Monstruo("M"));
-        
+
         thread1.start(); 
         thread2.start();        
 
@@ -36,6 +36,6 @@ public class Main {
             System.out.println("");
         }
         System.out.println("");
-        Thread.sleep(1000);
+        Thread.sleep(1500);
     }
 }

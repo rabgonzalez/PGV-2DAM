@@ -67,7 +67,7 @@ public class Mapa {
         return new int[]{x,y};
     }
 
-    public synchronized boolean matar(Cazador cazador, int[] posicion){
+    public synchronized boolean matar(int[] posicion){
         Random random = new Random();
         int probabilidad = random.nextInt(10) + 1;
 
@@ -75,17 +75,18 @@ public class Mapa {
             return false;
         }
         getUbicaciones()[posicion[0]][posicion[1]] = null; 
-        getUbicaciones()[posicion[0]][posicion[1]] = cazador; 
         return true;
     }
 
     public synchronized void moverCazador(Cazador cazador, int[] nuevaPosicion){
+        // Si el cazador ya tiene posicion, la eliminamos.
         if(cazador.getPosicion() != null){
             int[] posicionAnterior = cazador.getPosicion();
             getUbicaciones()[posicionAnterior[0]][posicionAnterior[1]] = null;
         }
         
-        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Monstruo && matar(cazador, nuevaPosicion)){
+        // Si en esa posición hay un monstruo y este muere, el cazador obtiene una kill.
+        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Monstruo && matar(nuevaPosicion)){
             cazador.setKills(cazador.getKills()+1);
         }
 
@@ -95,7 +96,9 @@ public class Mapa {
 
     public void generarMonstruo(Monstruo monstruo){
         int[] spawn = null;
-        do{
+
+        // Si ya hay alguien en esa posicion, vuelve a generarse una nueva posicion.
+        do {
             spawn = generarUbicacionAleatoria();
         } while(getUbicaciones()[spawn[0]][spawn[1]] instanceof Personaje);
 
