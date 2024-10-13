@@ -67,7 +67,7 @@ public class Mapa {
         return new int[]{x,y};
     }
 
-    public synchronized boolean matar(int[] posicion){
+    public boolean matar(int[] posicion){
         Random random = new Random();
         int probabilidad = random.nextInt(10) + 1;
 
@@ -85,24 +85,36 @@ public class Mapa {
             getUbicaciones()[posicionAnterior[0]][posicionAnterior[1]] = null;
         }
         
-        // Si en esa posición hay un monstruo y este muere, el cazador obtiene una kill.
-        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Monstruo && matar(nuevaPosicion)){
-            cazador.setKills(cazador.getKills()+1);
+        // Si en esa posición hay un monstruo y este muere, el cazador obtiene una kill y el monstruo es cazado.
+        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Monstruo){
+            Monstruo monstruo = (Monstruo) getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]];
+            
+            if(matar(nuevaPosicion)){
+                monstruo.setCazado(true);
+                cazador.setKills(cazador.getKills()+1);
+            }
+        }
+
+        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Cazador){
+            return;
         }
 
         getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] = cazador;
         cazador.setPosicion(nuevaPosicion);
     }
 
-    public void generarMonstruo(Monstruo monstruo){
-        int[] spawn = null;
+    public synchronized void moverMonstruo(Monstruo monstruo, int[] nuevaPosicion){
+        // Si el monstruo ya tiene posicion, la eliminamos.
+        if(monstruo.getPosicion() != null){
+            int[] posicionAnterior = monstruo.getPosicion();
+            getUbicaciones()[posicionAnterior[0]][posicionAnterior[1]] = null;
+        }
 
-        // Si ya hay alguien en esa posicion, vuelve a generarse una nueva posicion.
-        do {
-            spawn = generarUbicacionAleatoria();
-        } while(getUbicaciones()[spawn[0]][spawn[1]] instanceof Personaje);
+        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Personaje){
+            return;
+        }
 
-        getUbicaciones()[spawn[0]][spawn[1]] = monstruo;
-        monstruo.setPosicion(spawn);
+        getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] = monstruo;
+        monstruo.setPosicion(nuevaPosicion);
     }
 }
