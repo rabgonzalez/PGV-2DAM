@@ -2,6 +2,7 @@ package ies.puerto;
 
 public class Monstruo extends Personaje implements Runnable{
     private boolean cazado = false;
+    private static final long TIEMPOVIDA = 10000;
 
     public boolean isCazado() {
         return this.cazado;
@@ -47,8 +48,9 @@ public class Monstruo extends Personaje implements Runnable{
 
     @Override
     public void run() {
+        long startTime = System.currentTimeMillis();
         int[] posicion = null;
-        while(isCazado() == false){
+        while(!isCazado() && (System.currentTimeMillis() - startTime < TIEMPOVIDA)){
             // Si en esa posición ya hay alguien, vuelve a moverse a una posición aleatoria
             posicion = getMapa().generarUbicacionAleatoria();
             getMapa().moverMonstruo(this, posicion);
@@ -58,6 +60,9 @@ public class Monstruo extends Personaje implements Runnable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            /**TODO arreglar
+            getMapa().getUbicaciones()[getPosicion()[0]][getPosicion()[1]] = null;
+            */
         }
     }
 }

@@ -1,6 +1,8 @@
 package ies.puerto;
 
 public class Main {
+    private static final long TIEMPOPARTIDA = 15000;
+
     public static void main(String[] args) throws InterruptedException{
         Mapa mapa = new Mapa(4); 
 
@@ -14,14 +16,16 @@ public class Main {
         Thread thread3 = new Thread(monstruo1);
         Thread thread4 = new Thread(monstruo2);
 
+        long startTime = System.currentTimeMillis();
         thread3.start();
         thread4.start();
         thread1.start(); 
         thread2.start();        
 
-        while(thread1.isAlive() && thread2.isAlive()){
+        while((thread1.isAlive() && thread2.isAlive()) && (System.currentTimeMillis() - startTime < TIEMPOPARTIDA)){
             pintarMapa(mapa);
         }
+        System.out.println("\rFin de la partida");
     }
 
     public static void pintarMapa(Mapa mapa) throws InterruptedException{

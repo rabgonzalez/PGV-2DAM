@@ -56,7 +56,7 @@ public class Cazador extends Personaje implements Runnable{
             }
 
             if(kills == 2){
-                System.out.println("Todos los monstruos han sido capturados, Fin de la partida.");
+                System.out.println("Todos los monstruos han sido capturados");
                 break;
             }
 
