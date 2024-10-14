@@ -79,6 +79,11 @@ public class Mapa {
     }
 
     public synchronized void moverCazador(Cazador cazador, int[] nuevaPosicion){
+        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Cazador){
+            moverCazador(cazador, generarUbicacionAleatoria());
+            return;
+        }
+
         // Si el cazador ya tiene posicion, la eliminamos.
         if(cazador.getPosicion() != null){
             int[] posicionAnterior = cazador.getPosicion();
@@ -95,23 +100,20 @@ public class Mapa {
             }
         }
 
-        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Cazador){
-            return;
-        }
-
         getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] = cazador;
         cazador.setPosicion(nuevaPosicion);
     }
 
     public synchronized void moverMonstruo(Monstruo monstruo, int[] nuevaPosicion){
+        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Personaje){
+            moverMonstruo(monstruo, generarUbicacionAleatoria());
+            return;
+        }
+
         // Si el monstruo ya tiene posicion, la eliminamos.
         if(monstruo.getPosicion() != null){
             int[] posicionAnterior = monstruo.getPosicion();
             getUbicaciones()[posicionAnterior[0]][posicionAnterior[1]] = null;
-        }
-
-        if(getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] instanceof Personaje){
-            return;
         }
 
         getUbicaciones()[nuevaPosicion[0]][nuevaPosicion[1]] = monstruo;

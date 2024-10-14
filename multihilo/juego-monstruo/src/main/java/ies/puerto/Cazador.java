@@ -47,7 +47,7 @@ public class Cazador extends Personaje implements Runnable{
         int[] nuevaPosicion = null;
         int contador = 0;
 
-        while(kills < 2){
+        while(kills < 3){
             nuevaPosicion = getMapa().generarUbicacionAleatoria();
             getMapa().moverCazador(this, nuevaPosicion);
 
@@ -55,13 +55,13 @@ public class Cazador extends Personaje implements Runnable{
                 contador = kills;
             }
 
-            if(kills == 2){
+            if(kills == 3){
                 System.out.println("Todos los monstruos han sido capturados");
                 break;
             }
 
             try {
-                Thread.sleep(1500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

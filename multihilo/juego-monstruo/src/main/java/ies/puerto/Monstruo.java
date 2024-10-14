@@ -56,13 +56,11 @@ public class Monstruo extends Personaje implements Runnable{
             getMapa().moverMonstruo(this, posicion);
 
             try {
-                Thread.sleep(1500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            /**TODO arreglar
             getMapa().getUbicaciones()[getPosicion()[0]][getPosicion()[1]] = null;
-            */
         }
     }
 }

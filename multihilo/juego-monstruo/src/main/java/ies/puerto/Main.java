@@ -10,20 +10,25 @@ public class Main {
         Cazador cazador2 = new Cazador("C", mapa);
         Monstruo monstruo1 = new Monstruo("M", mapa);
         Monstruo monstruo2 = new Monstruo("M", mapa);
+        Monstruo monstruo3 = new Monstruo("M", mapa);
 
         Thread thread1 = new Thread(cazador1);   
         Thread thread2 = new Thread(cazador2); 
         Thread thread3 = new Thread(monstruo1);
         Thread thread4 = new Thread(monstruo2);
+        Thread thread5 = new Thread(monstruo3);
 
         long startTime = System.currentTimeMillis();
+        thread1.start(); 
+        thread2.start();  
         thread3.start();
         thread4.start();
-        thread1.start(); 
-        thread2.start();        
+        thread5.start();      
 
         while((thread1.isAlive() && thread2.isAlive()) && (System.currentTimeMillis() - startTime < TIEMPOPARTIDA)){
             pintarMapa(mapa);
+            System.out.println("Monstruos cazados: "+Cazador.kills);
+            Thread.sleep(1000);
         }
         System.out.println("\rFin de la partida");
     }
@@ -45,6 +50,5 @@ public class Main {
             System.out.println("");
         }
         System.out.println("");
-        Thread.sleep(1500);
     }
 }
