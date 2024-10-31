@@ -2,7 +2,6 @@ package ies.puerto.ejercicio5;
 
 import java.io.*;
 import java.net.*;
-import java.nio.file.Files;
 
 public class Servidor {
     public static void main(String[] args) throws IOException {
@@ -19,39 +18,57 @@ public class Servidor {
 
             String message;
             while ((message = in.readLine()) != null) {
-                if (buscarFichero(message).equals("")) {
-                    out.println("Fichero no encontrado.");
+                File fichero = buscarFichero(message);
+                if(fichero != null){
+                    out.println(leerFichero(fichero));
                 } else {
-                    out.println(buscarFichero(message));
+                    out.println("No se ha encontrado el fichero");
                 }
             }
             clientSocket.close();
         }
     }
 
-    public static String buscarFichero(String nombreFichero){
+    public static File buscarFichero(String nombreFichero){
         String path = "src/main/java/ies/puerto/ejercicio5/server/";
         File directorio = new File(path);
         
-        File[] ficheros = directorio.listFiles();
-        
-        for (File fichero : ficheros) {
-            if(fichero.getName().equals(nombreFichero+".txt")){
-                try {
-                    byte[] bytes = Files.readAllBytes(directorio.toPath());
-                    return obtenerBytes(bytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        for (File file : directorio.listFiles()) {
+            if(file.getName().equals(nombreFichero)){
+                System.out.println("Se ha encontrado");
+                return file;
             }
         }
-        return "";
+
+        System.out.println("No se ha encontrado el fichero");
+        return null;
     }
 
-    public static String obtenerBytes(byte[] bytes){
+    public static String leerFichero(File file){
+        FileInputStream fis = null;
+        byte[] bytes = new byte[(int) file.length()];
+
+        try {
+            fis = new FileInputStream(file);
+
+            fis.read(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bytesToHexString(bytes);
+    }
+
+    public static String bytesToHexString(byte[] bytes){
         StringBuilder sb = new StringBuilder();
+
         for (byte b : bytes) {
-            sb.append(b); 
+            sb.append(String.format("%02X", b));
         }
         return sb.toString();
     }

@@ -16,16 +16,31 @@ public class Cliente {
         String userInput;
         
         while ((userInput = console.readLine()) != null) {
-            out.println(userInput); 
-            System.out.println("Respuesta del servidor: " + in.readLine());
+            out.println(userInput);
+            String respuesta = in.readLine();
+            if(!respuesta.startsWith("No")){
+                guardarFichero(userInput, respuesta);
+            }
+            System.out.println(in.readLine()); 
         }
 
         socket.close();
     }
 
-    public void guardarFichero(String fichero){}
+    public static void guardarFichero(String fichero, String contenido){
+        FileWriter fw;
+        try {
+            fw = new FileWriter("src/main/java/ies/puerto/ejercicio5/client/"+fichero+".txt");
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(contenido);
+            bw.close();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+    }
 
-    public String leerFichero(){
+    public String leerFichero(String fichero){
         return "";
     }
 }
