@@ -14,16 +14,10 @@ public class Cliente {
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 
         String userInput;
-        
         while ((userInput = console.readLine()) != null) {
             out.println(userInput);
-            String respuesta = in.readLine();
-            if(!respuesta.startsWith("No")){
-                guardarFichero(userInput, respuesta);
-            }
-            System.out.println(in.readLine()); 
+            System.out.println("Servidor: "+in.readLine()); 
         }
-
         socket.close();
     }
 

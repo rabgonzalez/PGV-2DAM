@@ -13,13 +13,13 @@ public class Servidor {
             Socket clientSocket = serverSocket.accept();  // Espera una conexión de cliente
             System.out.println("Cliente conectado: " + clientSocket.getInetAddress());
 
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true); //Manda información al cliente
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); //Recibe información del cliente
 
             String message;
             while ((message = in.readLine()) != null) {
-                System.out.println("Recibido: " + message);
-                out.println("Eco: " + message);  // Responde al cliente
+                System.out.println("Recibido: " + message); //Obtiene mensaje del cliente
+                out.println("Eco: " + message);  //Responde al cliente
             }
 
             clientSocket.close();
