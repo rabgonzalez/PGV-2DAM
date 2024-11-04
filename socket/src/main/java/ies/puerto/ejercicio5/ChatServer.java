@@ -36,7 +36,7 @@ public class ChatServer {
 
                 String message;
                 while ((message = in.readLine()) != null) {
-                    out.println(socket.getInetAddress()+" "+message);
+                    out.println(message+","+buscarFichero(message));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -49,27 +49,22 @@ public class ChatServer {
                 clientWriters.remove(out);
             }
         }
-
-        private void sendMessageToAllClients(String message) {
-            for (PrintWriter writer : clientWriters) {
-                writer.println(message);
-            }
-        }
     }
 
-    public static File buscarFichero(String nombreFichero){
+    public static String buscarFichero(String nombreFichero){
         String path = "src/main/java/ies/puerto/ejercicio5/server/";
         File directorio = new File(path);
         
         for (File file : directorio.listFiles()) {
+
             if(file.getName().equals(nombreFichero)){
-                System.out.println("Se ha encontrado");
-                return file;
+                System.out.println("Se ha encontrado el fichero: "+nombreFichero);
+                return leerFichero(file);
             }
         }
 
         System.out.println("No se ha encontrado el fichero");
-        return null;
+        return "";
     }
 
     public static String leerFichero(File file){
