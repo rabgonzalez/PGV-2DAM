@@ -17,13 +17,23 @@ public class Cliente {
         while ((userInput = console.readLine()) != null) {
             out.println(userInput);
             String[] response = in.readLine().split(",");
-            guardarFichero(response[0], hexToString(response[1]));
+
+            if(response.length == 1){
+                System.out.println("No se ha encontrado el fichero: "+response[0]);
+            } else {
+                guardarFichero(response[0], hexToString(response[1]));
+                System.out.println("Fichero guardado como: "+response[0]);
+            }
         }
         socket.close();
     }
 
     public static String hexToString(String hex){
         StringBuilder sb = new StringBuilder();
+
+        if(hex.length() == 0){
+            return "";
+        }
 
         for (int i = 0; i < hex.length(); i += 2) { //Saltamos de 2 en 2 para coger el inicio de cada valor entero
             String hexNum = hex.substring(i, (i+2)); //Cogemos 2 numeros, que serán un valor entero
@@ -43,6 +53,6 @@ public class Cliente {
             
         } catch (IOException e) {
             e.printStackTrace();
-        } 
+        }
     }
 }

@@ -51,23 +51,22 @@ public class ChatServer {
         }
     }
 
-    public static String buscarFichero(String nombreFichero){
+    public static String buscarFichero(String nombreFichero) {
         String path = "src/main/java/ies/puerto/ejercicio5/server/";
         File directorio = new File(path);
-        
-        for (File file : directorio.listFiles()) {
 
-            if(file.getName().equals(nombreFichero)){
-                System.out.println("Se ha encontrado el fichero: "+nombreFichero);
+        for (File file : directorio.listFiles()) {
+            if (file.getName().equals(nombreFichero)) {
+                System.out.println("Petición del fichero: "+nombreFichero);
                 return leerFichero(file);
             }
         }
 
-        System.out.println("No se ha encontrado el fichero");
+        System.out.println("No se ha encontrado el fichero: "+nombreFichero);
         return "";
     }
 
-    public static String leerFichero(File file){
+    public static String leerFichero(File file) {
         FileInputStream fis = null;
         byte[] bytes = new byte[(int) file.length()];
 
@@ -87,7 +86,7 @@ public class ChatServer {
         return bytesToHexString(bytes);
     }
 
-    public static String bytesToHexString(byte[] bytes){
+    public static String bytesToHexString(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
 
         for (byte b : bytes) {
