@@ -18,11 +18,11 @@ public class Cliente {
             out.println(userInput);
             String[] response = in.readLine().split(",");
 
-            if(response.length == 1){
-                System.out.println("No se ha encontrado el fichero: "+response[0]);
-            } else {
+            if(response.length == 2){
                 guardarFichero(response[0], hexToString(response[1]));
                 System.out.println("Fichero guardado como: "+response[0]);
+            } else{
+                System.out.println(response[0]);
             }
         }
         socket.close();
@@ -43,7 +43,7 @@ public class Cliente {
         return sb.toString();
     }
 
-    public static void guardarFichero(String fichero, String contenido){
+    public static boolean guardarFichero(String fichero, String contenido){
         FileWriter fw;
         try {
             fw = new FileWriter("src/main/java/ies/puerto/ejercicio5/client/"+fichero);
@@ -53,6 +53,8 @@ public class Cliente {
             
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 }

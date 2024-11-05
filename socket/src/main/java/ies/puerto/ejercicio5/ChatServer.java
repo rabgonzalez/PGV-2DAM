@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Set;
 import java.util.concurrent.*;
+import java.util.Objects;
 
 public class ChatServer {
     private static final Set<PrintWriter> clientWriters = ConcurrentHashMap.newKeySet();
@@ -19,10 +20,21 @@ public class ChatServer {
         }
     }
 
-    private static class ClientHandler extends Thread {
-        private Socket socket;
-        private PrintWriter out;
-        private BufferedReader in;
+    public static class ClientHandler extends Thread {
+        public Socket socket;
+        public PrintWriter out;
+        public BufferedReader in;
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == this)
+                return true;
+            if (!(o instanceof ChatServer)) {
+                return false;
+            }
+            ChatServer chatServer = (ChatServer) o;
+            return Objects.equals(this, chatServer);
+        }
 
         public ClientHandler(Socket socket) {
             this.socket = socket;
@@ -36,7 +48,17 @@ public class ChatServer {
 
                 String message;
                 while ((message = in.readLine()) != null) {
-                    out.println(message+","+buscarFichero(message));
+                    File fichero = buscarFichero(message);
+
+                    if (fichero == null) {
+                        out.println("No se ha encontrado el fichero: " + message);
+                    } else {
+                        byte[] bytes = leerFichero(fichero);
+                        String hexFile = bytesToHexString(bytes);
+
+                        out.println(message + "," + hexFile);
+                        System.out.println("Fichero guardado como: " + message);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -51,22 +73,22 @@ public class ChatServer {
         }
     }
 
-    public static String buscarFichero(String nombreFichero) {
+    public static File buscarFichero(String nombreFichero) {
         String path = "src/main/java/ies/puerto/ejercicio5/server/";
         File directorio = new File(path);
 
         for (File file : directorio.listFiles()) {
             if (file.getName().equals(nombreFichero)) {
-                System.out.println("Petición del fichero: "+nombreFichero);
-                return leerFichero(file);
+                System.out.println("Petición del fichero: " + nombreFichero);
+                return file;
             }
         }
 
-        System.out.println("No se ha encontrado el fichero: "+nombreFichero);
-        return "";
+        System.out.println("No se ha encontrado el fichero: " + nombreFichero);
+        return null;
     }
 
-    public static String leerFichero(File file) {
+    public static byte[] leerFichero(File file) {
         FileInputStream fis = null;
         byte[] bytes = new byte[(int) file.length()];
 
@@ -83,7 +105,7 @@ public class ChatServer {
                 e.printStackTrace();
             }
         }
-        return bytesToHexString(bytes);
+        return bytes;
     }
 
     public static String bytesToHexString(byte[] bytes) {

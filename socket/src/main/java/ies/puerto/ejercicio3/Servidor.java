@@ -18,20 +18,26 @@ public class Servidor {
 
             String message;
             while ((message = in.readLine()) != null) {
-                String[] numeros = message.split(" ");
-                if(numeros.length > 2 || numeros.length < 2){
-                    out.println("Error: Debe introducir dos números separados por un espacio.");
-                    continue;
-                }
-
-                int num1 = Integer.parseInt(numeros[0]);
-                int num2 = Integer.parseInt(numeros[1]);
-                int suma = num1 + num2;
-
                 System.out.println("Recibido: " + message);
-                out.println("Eco: " + suma);  // Responde al cliente
+
+                if(suma(message) == -1){
+                    out.println("Debes introducir exactamente 2 números positivos");
+                    return; 
+                }
+                out.println("Eco: " + suma(message));  // Responde al cliente
             }
             clientSocket.close();
         }
+    }
+
+    public static int suma(String message){
+        String[] numeros = message.split(" ");
+        if(numeros.length > 2 || numeros.length < 2){
+            return -1;
+        }
+
+        int num1 = Integer.parseInt(numeros[0]);
+        int num2 = Integer.parseInt(numeros[1]);
+        return (num1+num2);
     }
 }

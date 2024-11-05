@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ChatServer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">socket</a> &gt; <a href="index.source.html" class="el_package">ies.puerto.ejercicio5</a> &gt; <span class="el_source">ChatServer.java</span></div><h1>ChatServer.java</h1><pre class="source lang-java linenums">package ies.puerto.ejercicio5;
+
+import java.io.*;
+import java.net.*;
+import java.util.Set;
+import java.util.concurrent.*;
+
+<span class="fc" id="L8">public class ChatServer {</span>
+<span class="fc" id="L9">    private static final Set&lt;PrintWriter&gt; clientWriters = ConcurrentHashMap.newKeySet();</span>
+
+    public static void main(String[] args) {
+<span class="nc" id="L12">        System.out.println(&quot;Servidor de chat iniciado...&quot;);</span>
+<span class="nc" id="L13">        try (ServerSocket serverSocket = new ServerSocket(12345)) {</span>
+            while (true) {
+<span class="nc" id="L15">                new ClientHandler(serverSocket.accept()).start();</span>
+            }
+<span class="nc" id="L17">        } catch (IOException e) {</span>
+<span class="nc" id="L18">            e.printStackTrace();</span>
+        }
+<span class="nc" id="L20">    }</span>
+
+    private static class ClientHandler extends Thread {
+        private Socket socket;
+        private PrintWriter out;
+        private BufferedReader in;
+
+<span class="nc" id="L27">        public ClientHandler(Socket socket) {</span>
+<span class="nc" id="L28">            this.socket = socket;</span>
+<span class="nc" id="L29">        }</span>
+
+        public void run() {
+            try {
+<span class="nc" id="L33">                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));</span>
+<span class="nc" id="L34">                out = new PrintWriter(socket.getOutputStream(), true);</span>
+<span class="nc" id="L35">                clientWriters.add(out);</span>
+
+                String message;
+<span class="nc bnc" id="L38" title="All 2 branches missed.">                while ((message = in.readLine()) != null) {</span>
+<span class="nc" id="L39">                    File fichero = buscarFichero(message);</span>
+                    
+<span class="nc bnc" id="L41" title="All 2 branches missed.">                    if (fichero == null) {</span>
+<span class="nc" id="L42">                        out.println(&quot;No se ha encontrado el fichero: &quot; + message);</span>
+                    } else {
+<span class="nc" id="L44">                        byte[] bytes = leerFichero(fichero);</span>
+<span class="nc" id="L45">                        String hexFile = bytesToHexString(bytes);</span>
+
+<span class="nc" id="L47">                        out.println(message + &quot;,&quot; + hexFile);</span>
+<span class="nc" id="L48">                        System.out.println(&quot;Fichero guardado como: &quot; + message);</span>
+                    }
+<span class="nc" id="L50">                }</span>
+<span class="nc" id="L51">            } catch (IOException e) {</span>
+<span class="nc" id="L52">                e.printStackTrace();</span>
+            } finally {
+                try {
+<span class="nc" id="L55">                    socket.close();</span>
+<span class="nc" id="L56">                } catch (IOException e) {</span>
+<span class="nc" id="L57">                    e.printStackTrace();</span>
+<span class="nc" id="L58">                }</span>
+<span class="nc" id="L59">                clientWriters.remove(out);</span>
+            }
+<span class="nc" id="L61">        }</span>
+    }
+
+    public static File buscarFichero(String nombreFichero) {
+<span class="fc" id="L65">        String path = &quot;src/main/java/ies/puerto/ejercicio5/server/&quot;;</span>
+<span class="fc" id="L66">        File directorio = new File(path);</span>
+
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (File file : directorio.listFiles()) {</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">            if (file.getName().equals(nombreFichero)) {</span>
+<span class="fc" id="L70">                System.out.println(&quot;Petición del fichero: &quot; + nombreFichero);</span>
+<span class="fc" id="L71">                return file;</span>
+            }
+        }
+
+<span class="fc" id="L75">        System.out.println(&quot;No se ha encontrado el fichero: &quot; + nombreFichero);</span>
+<span class="fc" id="L76">        return null;</span>
+    }
+
+    public static byte[] leerFichero(File file) {
+<span class="fc" id="L80">        FileInputStream fis = null;</span>
+<span class="fc" id="L81">        byte[] bytes = new byte[(int) file.length()];</span>
+
+        try {
+<span class="fc" id="L84">            fis = new FileInputStream(file);</span>
+
+<span class="fc" id="L86">            fis.read(bytes);</span>
+<span class="nc" id="L87">        } catch (IOException e) {</span>
+<span class="nc" id="L88">            e.printStackTrace();</span>
+        } finally {
+            try {
+<span class="fc" id="L91">                fis.close();</span>
+<span class="nc" id="L92">            } catch (IOException e) {</span>
+<span class="nc" id="L93">                e.printStackTrace();</span>
+<span class="fc" id="L94">            }</span>
+        }
+<span class="fc" id="L96">        return bytes;</span>
+    }
+
+    public static String bytesToHexString(byte[] bytes) {
+<span class="fc" id="L100">        StringBuilder sb = new StringBuilder();</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        for (byte b : bytes) {</span>
+<span class="fc" id="L103">            sb.append(String.format(&quot;%02X&quot;, b));</span>
+        }
+<span class="fc" id="L105">        return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
